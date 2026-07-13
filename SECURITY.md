@@ -8,8 +8,7 @@ Only the latest release version on the `main` branch is actively supported and p
 
 | Version | Supported | Notes |
 |---------|-----------|-------|
-| Latest (main branch) | :white_check_mark: Yes | Active development and patch branch. |
-| <= 1.0.0 | :x: No | Please upgrade to the latest commit. |
+| v0.0.1  | Yes | Latest release and active development branch. |
 
 ---
 
@@ -26,7 +25,7 @@ To ensure maximum security while running the Reddit MCP server, we recommend adh
 
 ## Reporting a Vulnerability
 
-If you find a security-related bug or vulnerability, please **do not** open a public issue. Public issues expose vulnerabilities before they can be successfully patched, putting other users at risk.
+If you find a security-related bug or vulnerability, please do not open a public issue. Public issues expose vulnerabilities before they can be successfully patched, putting other users at risk.
 
 ### Process to Report:
 1. Send a detailed report to the repository owner or core maintainers (refer to the repository contact page).
@@ -36,6 +35,6 @@ If you find a security-related bug or vulnerability, please **do not** open a pu
    - Any suggested mitigations or patches.
 
 ### Response Time & Resolution:
-- We aim to acknowledge receipt of security reports within **48 hours**.
+- We aim to acknowledge receipt of security reports within 48 hours.
 - We will work closely with you to verify, investigate, and formulate a patch for the issue.
 - Once a patch is fully tested and deployed, credit will be given to the reporter (unless they prefer to remain anonymous).
