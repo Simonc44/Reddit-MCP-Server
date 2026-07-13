@@ -1,6 +1,6 @@
 # Reddit MCP Server
 
-![Reddit — logo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAStlXFsgqBjmF17RtWMdn5QqX3FNuEeXKii91TOVFMg&s=10)
+![Reddit MCP Server — logo](https://github.com/Simonc44/Reddit-MCP-Server/blob/main/assets/logo.png?raw=true)
 
 ---
 
