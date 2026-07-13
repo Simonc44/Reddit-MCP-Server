@@ -1,4 +1,4 @@
-# 🔍 Reddit MCP Server
+# Reddit MCP Server
 
 ![Reddit — logo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAStlXFsgqBjmF17RtWMdn5QqX3FNuEeXKii91TOVFMg&s=10)
 
