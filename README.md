@@ -175,14 +175,11 @@ The `analyze_opportunities` tool scores posts using:
 Default subreddits scanned: `SomebodyMakeThis`, `StartupIdeas`, `businessideas`, `Entrepreneur`, `saas`, `technology`, `antiwork`
 
 ## Tech Stack
-
-<div align="center">
   
 </picture>
      <img width="550" alt="FastMCP Logo" src="https://github.com/Simonc44/Reddit-MCP-Server/blob/main/assets/package.png?raw=true">
 </picture>
 
-</div>
 
 - **[FastMCP](https://gofastmcp.com)** — Python MCP framework
 - **[Playwright](https://playwright.dev/python/)** — Headless browser automation
