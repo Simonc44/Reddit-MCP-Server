@@ -6,6 +6,7 @@
 
 A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that lets AI assistants like Claude search, browse, and analyze Reddit in real-time using Playwright web scraping.
 
+> [!NOTE]
 > **No Reddit API key required** — works by scraping the public Reddit interface.
 
 ---
