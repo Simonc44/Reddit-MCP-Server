@@ -4,6 +4,13 @@
 
 <img width="550" alt="Reddit MCP Server Logo" src="https://github.com/Simonc44/Reddit-MCP-Server/blob/main/assets/logo.png?raw=true">
 
+<br><br>
+
+<img width="550" alt="Reddit MCP Server Package" src="https://github.com/Simonc44/Reddit-MCP-Server/blob/main/assets/package.png?raw=true">
+
+<br><br>
+
+[![Latest Version](https://img.shields.io/badge/version-v0.0.1-blue.svg)](#)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Model Context Protocol](https://img.shields.io/badge/MCP-1.0.0-green.svg)](https://modelcontextprotocol.io)
 [![Playwright](https://img.shields.io/badge/playwright-chromium-orange.svg)](https://playwright.dev/python/)
@@ -19,43 +26,45 @@ A **Model Context Protocol (MCP)** server that enables AI assistants (such as Cl
 Built using **FastMCP** and **Playwright**, this server operates without requiring a Reddit API key by dynamically scraping the public Reddit interface with optimized, headless browser sessions.
 
 > [!NOTE]
+> **Current Version:** `v0.0.1` (Latest)
+>
 > **No Reddit API key required** — It works by scraping the public Reddit web interface.
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
-1. [Features](#-features)
-2. [Architecture Overview](#%EF%B8%8F-architecture-overview)
-3. [Available Tools](#-available-tools)
-4. [Installation & Setup](#-installation--setup)
+1. [Features](#features)
+2. [Architecture Overview](#architecture-overview)
+3. [Available Tools](#available-tools)
+4. [Installation & Setup](#installation--setup)
    - [Prerequisites](#prerequisites)
    - [Quick Start](#quick-start)
-5. [Client Configuration](#%EF%B8%8F-client-configuration)
+5. [Client Configuration](#client-configuration)
    - [Claude Desktop](#claude-desktop)
    - [Claude Code](#claude-code)
-6. [Tool Usage & Examples](#-tool-usage--examples)
-7. [Opportunity Scoring Algorithm](#-opportunity-scoring-algorithm)
-8. [Advanced Configuration](#-advanced-configuration)
-9. [Troubleshooting & Limitations](#-troubleshooting--limitations)
-10. [Contributing](#-contributing)
-11. [Security](#-security)
-12. [License](#-license)
+6. [Tool Usage & Examples](#tool-usage--examples)
+7. [Opportunity Scoring Algorithm](#opportunity-scoring-algorithm)
+8. [Advanced Configuration](#advanced-configuration)
+9. [Troubleshooting & Limitations](#troubleshooting--limitations)
+10. [Contributing](#contributing)
+11. [Security](#security)
+12. [License](#license)
 
 ---
 
-## ✨ Features
+## Features
 
-- 🔍 **Reddit Search:** Browse one or multiple subreddits simultaneously with native sorting and keyword filtering.
-- 💬 **Comment Extraction:** Fetch complete threaded comments from any Reddit post, preserving authors, scores, and depth.
-- 📈 **Subreddit Analytics:** Retrieve subreddit description, active member counts, and trending/top posts.
-- 💡 **Business Opportunity Discovery:** Scan specific subreddits for startup ideas or pain points with smart scoring.
-- ⚡ **Performance Optimized:** Blocks heavy assets (images, fonts, media, tracking) to ensure lightning-fast scraping.
-- 🛡️ **Robust Scraper:** Implements resilient CSS selectors, automatic scroll-loading, and timeout handling.
+- **Reddit Search:** Browse one or multiple subreddits simultaneously with native sorting and keyword filtering.
+- **Comment Extraction:** Fetch complete threaded comments from any Reddit post, preserving authors, scores, and depth.
+- **Subreddit Analytics:** Retrieve subreddit description, active member counts, and trending/top posts.
+- **Business Opportunity Discovery:** Scan specific subreddits for startup ideas or pain points with smart scoring.
+- **Performance Optimized:** Blocks heavy assets (images, fonts, media, tracking) to ensure lightning-fast scraping.
+- **Robust Scraper:** Implements resilient CSS selectors, automatic scroll-loading, and timeout handling.
 
 ---
 
-## 🛠️ Architecture Overview
+## Architecture Overview
 
 The server communicates via standard I/O (stdin/stdout) using the Model Context Protocol. When an AI client invokes a tool:
 1. **FastMCP** dispatches the tool call to Python.
@@ -66,7 +75,7 @@ The server communicates via standard I/O (stdin/stdout) using the Model Context 
 
 ---
 
-## 🧰 Available Tools
+## Available Tools
 
 | Tool | Parameters | Description |
 |------|------------|-------------|
@@ -79,7 +88,7 @@ The server communicates via standard I/O (stdin/stdout) using the Model Context 
 
 ---
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 
@@ -121,7 +130,7 @@ The server communicates via standard I/O (stdin/stdout) using the Model Context 
 
 ---
 
-## ⚙️ Client Configuration
+## Client Configuration
 
 ### Claude Desktop
 
@@ -155,7 +164,7 @@ claude mcp add reddit-mcp -- python /path/to/reddit-mcp-server/server.py
 
 ---
 
-## 💡 Tool Usage & Examples
+## Tool Usage & Examples
 
 ### Global Search
 Ask your AI assistant: *"Search Reddit for 'best keyboard for typing 2025' from the last month."*
@@ -187,7 +196,7 @@ Under the hood, the AI will invoke:
 
 ---
 
-## 📊 Opportunity Scoring Algorithm
+## Opportunity Scoring Algorithm
 
 The `analyze_opportunities` tool implements a proprietary scoring function to identify valid business ideas and high-impact problems:
 
@@ -201,7 +210,7 @@ Additionally, the following multipliers and bonuses are applied:
 
 ---
 
-## 🛠️ Advanced Configuration
+## Advanced Configuration
 
 ### Customized Scraper Parameters
 The browser scraping parameters can be fine-tuned directly in `server.py`:
@@ -211,7 +220,7 @@ The browser scraping parameters can be fine-tuned directly in `server.py`:
 
 ---
 
-## ⚠️ Troubleshooting & Limitations
+## Troubleshooting & Limitations
 
 - **Rate Limits & IP Blocks:** Heavy automated scraping may trigger Reddit's anti-bot system, leading to HTTP 429 errors or temporary blocks. Ensure you do not make rapid sequential calls.
 - **Dynamic CSS Selectors:** Since this server relies on web scraping instead of the official API, updates to Reddit's frontend architecture (e.g., changing `shreddit-post` tags) may break selectors. Please open an issue if this occurs.
@@ -220,7 +229,7 @@ The browser scraping parameters can be fine-tuned directly in `server.py`:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are highly appreciated! Whether you want to improve the scraping selectors, add new analytical tools, or refine the documentation, we welcome your input.
 
@@ -228,12 +237,12 @@ Please read our [**Contributing Guidelines**](CONTRIBUTING.md) to get started on
 
 ---
 
-## 🔒 Security
+## Security
 
 We take security seriously. If you discover any vulnerability in this server, please refer to our [**Security Policy**](SECURITY.md) for details on how to report it securely.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
