@@ -10,16 +10,16 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that le
 
 ---
 
-## ✨ Features
+## Features
 
-- 🔎 **Search Reddit** by keywords or browse subreddits (hot/new/top/rising)
-- 💬 **Read comments** and full post content from any Reddit thread
-- 📊 **Analyze business opportunities** with smart scoring (engagement ratio, keyword matching)
-- 📋 **Get subreddit info** — description, members, trending posts
-- ⚡ **Fast** — blocks images/media loading, deduplicates results
-- 🛡️ **Robust** — fallback CSS selectors, error handling, timeout management
+-  **Search Reddit** by keywords or browse subreddits (hot/new/top/rising)
+-  **Read comments** and full post content from any Reddit thread
+-  **Analyze business opportunities** with smart scoring (engagement ratio, keyword matching)
+-  **Get subreddit info** — description, members, trending posts
+-  **Fast** — blocks images/media loading, deduplicates results
+-  **Robust** — fallback CSS selectors, error handling, timeout management
 
-## 🧰 Available Tools
+## Available Tools
 
 | Tool | Description |
 |------|-------------|
@@ -30,7 +30,7 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that le
 | `get_subreddit_info` | Get subreddit description, member count, and top posts |
 | `analyze_opportunities` | Score posts for business potential using engagement and keyword analysis |
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 
@@ -51,7 +51,7 @@ pip install -r requirements.txt
 playwright install chromium
 ```
 
-## 🚀 Usage
+## Usage
 
 ### Run the server
 
@@ -71,7 +71,7 @@ fastmcp run server.py
 fastmcp dev server.py
 ```
 
-## ⚙️ Configure with Claude
+## Configure with Claude
 
 ### Claude Desktop
 
@@ -97,7 +97,7 @@ Add this to your Claude Desktop config file:
 claude mcp add reddit -- python /absolute/path/to/server.py
 ```
 
-## 📖 Tool Examples
+## Tool Examples
 
 ### Search subreddits
 
@@ -153,7 +153,7 @@ claude mcp add reddit -- python /absolute/path/to/server.py
 }
 ```
 
-## 📊 Opportunity Scoring
+## Opportunity Scoring
 
 The `analyze_opportunities` tool scores posts using:
 
@@ -168,23 +168,19 @@ The `analyze_opportunities` tool scores posts using:
 
 Default subreddits scanned: `SomebodyMakeThis`, `StartupIdeas`, `businessideas`, `Entrepreneur`, `saas`, `technology`, `antiwork`
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 - **[FastMCP](https://gofastmcp.com)** — Python MCP framework
 - **[Playwright](https://playwright.dev/python/)** — Headless browser automation
 - **Transport**: stdio (standard for Claude Desktop / Claude Code)
 
-## ⚠️ Limitations
+## Limitations
 
 - **Rate limiting**: Reddit may throttle or block excessive scraping. The server includes delays between requests to mitigate this.
 - **No authentication**: Only public content is accessible.
 - **Dynamic selectors**: Reddit's HTML structure may change over time, which could require updating CSS selectors.
 - **Speed**: Each tool call takes 5-30 seconds depending on the number of subreddits and scroll depth.
 
-## 📄 License
+## License
 
 MIT
-
----
-
-**Built with ❤️ for the MCP ecosystem**
