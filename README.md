@@ -1,5 +1,9 @@
 # 🔍 Reddit MCP Server
 
+![Reddit — logo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAStlXFsgqBjmF17RtWMdn5QqX3FNuEeXKii91TOVFMg&s=10)
+
+---
+
 A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that lets AI assistants like Claude search, browse, and analyze Reddit in real-time using Playwright web scraping.
 
 > **No Reddit API key required** — works by scraping the public Reddit interface.
