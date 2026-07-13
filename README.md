@@ -1,8 +1,6 @@
 # Reddit MCP Server
 <div align="center">
   
-<a href="https://trendshift.io/repositories/21461" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21461" alt="prefecthq%2Ffastmcp | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-  
 </picture>
      <img width="550" alt="FastMCP Logo" src="https://github.com/Simonc44/Reddit-MCP-Server/blob/main/assets/logo.png?raw=true">
 </picture>
