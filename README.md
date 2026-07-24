@@ -6,10 +6,6 @@
 
 <br><br>
 
-<img width="550" alt="Reddit MCP Server Package" src="https://github.com/Simonc44/Reddit-MCP-Server/blob/main/assets/package.png?raw=true">
-
-<br><br>
-
 [![Latest Version](https://img.shields.io/badge/version-v0.0.1-blue.svg)](#)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Model Context Protocol](https://img.shields.io/badge/MCP-1.0.0-green.svg)](https://modelcontextprotocol.io)
