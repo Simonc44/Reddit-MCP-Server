@@ -1,5 +1,5 @@
 # Reddit MCP Server
-
+---
 <div align="center">
 
 [![Latest Version](https://img.shields.io/badge/version-v0.3.0-blue.svg)](#)
