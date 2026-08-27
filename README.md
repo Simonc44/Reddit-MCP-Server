@@ -1,20 +1,5 @@
 # Reddit MCP Server
 
-<div align="center">
-
-[![Latest Version](https://img.shields.io/badge/version-v0.3.0-blue.svg)](#)
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![CI](https://github.com/Simonc44/Reddit-MCP-Server/actions/workflows/ci.yml/badge.svg)](https://github.com/Simonc44/Reddit-MCP-Server/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](#)
-[![Model Context Protocol](https://img.shields.io/badge/MCP-1.0.0-green.svg)](https://modelcontextprotocol.io)
-[![Playwright](https://img.shields.io/badge/playwright-chromium-orange.svg)](https://playwright.dev/python/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-
-</div>
-
----
-
 **Your AI, plugged into Reddit. No API key. No login. Just the raw feed.**
 
 Give Claude — or any MCP client — real-time access to Reddit: browse subreddits, pull comment threads, mine startup ideas and pain points. Built on **FastMCP** and **Playwright**, it scrapes the public web interface with a fast, headless browser. The result: live Reddit data, straight from the source, with zero setup cost.
