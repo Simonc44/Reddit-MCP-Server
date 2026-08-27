@@ -1,11 +1,21 @@
 # Reddit MCP Server
 
+**Your AI, plugged into Reddit. No API key. No login. Just the raw feed.**
+
+Give Claude — or any MCP client — real-time access to Reddit: browse subreddits, pull comment threads, mine startup ideas and pain points. Built on **FastMCP** and **Playwright**, it scrapes the public web interface with a fast, headless browser. The result: live Reddit data, straight from the source, with zero setup cost.
+
+```text
+You:  "What are people complaining about in r/SaaS this week?"
+AI:   ▸ 214 posts scanned · 37 pain points found · score 1260 "Paying for
+      overpriced subscriptions is ridiculous" · 8 ideas over 1000 points
+```
+
 <div align="center">
 
-<img width="550" alt="Reddit MCP Server Logo" src="https://github.com/Simonc44/Reddit-MCP-Server/blob/main/assets/logo.png?raw=true">
-
-[![Latest Version](https://img.shields.io/badge/version-v0.0.1-blue.svg)](#)
+[![Latest Version](https://img.shields.io/badge/version-v0.3.0-blue.svg)](#)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![CI](https://github.com/Simonc44/Reddit-MCP-Server/actions/workflows/ci.yml/badge.svg)](https://github.com/Simonc44/Reddit-MCP-Server/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](#)
 [![Model Context Protocol](https://img.shields.io/badge/MCP-1.0.0-green.svg)](https://modelcontextprotocol.io)
 [![Playwright](https://img.shields.io/badge/playwright-chromium-orange.svg)](https://playwright.dev/python/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -15,59 +25,67 @@
 
 ---
 
-A **Model Context Protocol (MCP)** server that enables AI assistants (such as Claude Desktop, Claude Code, and other MCP clients) to search, browse, and analyze Reddit in real-time.
+## What's inside
 
-Built using **FastMCP** and **Playwright**, this server operates without requiring a Reddit API key by dynamically scraping the public Reddit interface with optimized, headless browser sessions.
-
-> [!NOTE]
-> **Current Version:** `v0.0.1` (Latest)
->
-> **No Reddit API key required** — It works by scraping the public Reddit web interface.
-
----
+- 🔍 **Search & browse** — scan one or many subreddits with native sorting, time filters and keyword filtering
+- 💬 **Comments & details** — threaded comment trees with authors, scores and depth, plus full post bodies
+- 📊 **Subreddit & user intel** — description, active users, top posts; any user's public posts and karma
+- 🚀 **Business opportunity radar** — scores posts for startup/pain-point potential (see the [algorithm](#opportunity-scoring-algorithm))
+- ⚡ **Built for speed** — one shared browser reused across calls, an in-memory TTL cache, asset blocking, retries with backoff, anti-bot detection
 
 ## Table of Contents
 
-1. [Features](#features)
-2. [Architecture Overview](#architecture-overview)
-3. [Available Tools](#available-tools)
-4. [Installation & Setup](#installation--setup)
-   - [Prerequisites](#prerequisites)
-   - [Quick Start](#quick-start)
-5. [Client Configuration](#client-configuration)
-   - [Claude Desktop](#claude-desktop)
-   - [Claude Code](#claude-code)
-6. [Tool Usage & Examples](#tool-usage--examples)
-7. [Opportunity Scoring Algorithm](#opportunity-scoring-algorithm)
-8. [Advanced Configuration](#advanced-configuration)
+1. [10-second demo](#10-second-demo)
+2. [Available Tools](#available-tools)
+3. [Quick Start](#quick-start)
+4. [Client Configuration](#client-configuration)
+   - [Claude Desktop](#claude-desktop) / [Claude Code](#claude-code)
+5. [Opportunity Scoring Algorithm](#opportunity-scoring-algorithm)
+6. [Configuration](#configuration)
+7. [Development](#development)
+8. [Docker](#docker)
 9. [Troubleshooting & Limitations](#troubleshooting--limitations)
-10. [Contributing](#contributing)
-11. [Security](#security)
-12. [License](#license)
+10. [Contributing](#contributing) · [Security](#security) · [License](#license)
 
----
+## 10-second demo
 
-## Features
+Ask your assistant in plain language — it speaks MCP natively:
 
-- **Reddit Search:** Browse one or multiple subreddits simultaneously with native sorting and keyword filtering.
-- **Comment Extraction:** Fetch complete threaded comments from any Reddit post, preserving authors, scores, and depth.
-- **Subreddit Analytics:** Retrieve subreddit description, active member counts, and trending/top posts.
-- **Business Opportunity Discovery:** Scan specific subreddits for startup ideas or pain points with smart scoring.
-- **Performance Optimized:** Blocks heavy assets (images, fonts, media, tracking) to ensure lightning-fast scraping.
-- **Robust Scraper:** Implements resilient CSS selectors, automatic scroll-loading, and timeout handling.
+> *"Search Reddit for 'best mechanical keyboard 2025' from the last month."*
 
----
+```json
+{
+  "total_results": 25,
+  "query": "best mechanical keyboard 2025",
+  "posts": [
+    {
+      "title": "The Keychron Q3 is criminally underrated",
+      "score": 812,
+      "num_comments": 143,
+      "author": "keeblover42",
+      "url": "https://www.reddit.com/r/MechanicalKeyboards/comments/...",
+      "post_type": "self"
+    }
+  ]
+}
+```
 
-## Architecture Overview
+> *"Analyze r/SaaS and r/Entrepreneur for startup pain points."*
 
-The server communicates via standard I/O (stdin/stdout) using the Model Context Protocol. When an AI client invokes a tool:
-1. **FastMCP** dispatches the tool call to Python.
-2. A headless **Playwright (Chromium)** instance is initialized with custom headers and a realistic user-agent.
-3. Media and unnecessary network assets are intercepted and blocked to minimize bandwidth and processing time.
-4. The requested Reddit page is loaded, scrolled dynamically if necessary, and scraped via robust selectors.
-5. Data is structured, analyzed (e.g. scored for opportunities), and returned to the client as JSON.
-
----
+```json
+{
+  "total_posts_scanned": 214,
+  "high_score_ideas": 8,
+  "ideas": [
+    {
+      "title": "Paying for overpriced subscriptions is ridiculous — someone should make a smart subscription manager",
+      "opportunity_score": 1260,
+      "matched_keywords": ["pay", "subscription", "should exist", "problem"],
+      "url": "https://www.reddit.com/r/SaaS/comments/..."
+    }
+  ]
+}
+```
 
 ## Available Tools
 
@@ -76,64 +94,31 @@ The server communicates via standard I/O (stdin/stdout) using the Model Context 
 | `search_reddit` | `subreddits` (list), `sort`, `time_filter`, `limit`, `keywords` (list) | Browse posts from specific subreddits with sorting. |
 | `search_reddit_query` | `query` (str), `sort`, `time_filter`, `subreddit`, `limit` | Perform a global keyword search across Reddit. |
 | `get_post_comments` | `post_url` (str), `limit` | Extract threaded comments with hierarchical depth. |
-| `get_post_details` | `post_url` (str) | Get full details including post selftext, link, and metadata. |
-| `get_subreddit_info` | `subreddit` (str) | Retrieve member statistics, description, and top posts. |
-| `analyze_opportunities`| `subreddits` (list), `min_score`, `limit`, `keywords` (list) | Identify high-potential SaaS and startup pain points. |
+| `get_post_details` | `post_url` (str) | Get full details: selftext, link, flair, metadata. |
+| `get_subreddit_info` | `subreddit` (str) | Name, description, active users and top posts. |
+| `get_user_posts` | `username` (str), `sort`, `limit` | Browse a user's public posts and karma. |
+| `get_trending_posts` | `limit`, `time_filter` | Get the current top posts of `r/popular`. |
+| `analyze_opportunities`| `subreddits` (list), `min_score`, `limit`, `keywords` (list), `sort`, `time_filter` | Identify high-potential SaaS/startup pain points. |
+| `health_check` | — | Verify the server is alive (no network access). |
 
----
+## Quick Start
 
-## Installation & Setup
+```bash
+git clone https://github.com/Simonc44/Reddit-MCP-Server.git
+cd Reddit-MCP-Server
 
-### Prerequisites
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+playwright install chromium                          # one-time browser download
+```
 
-- **Python 3.10** or higher
-- **pip** (Python package installer)
-- **Node.js** (optional, for running `fastmcp` CLI easily)
-
-### Quick Start
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/reddit-mcp-server.git
-   cd reddit-mcp-server
-   ```
-
-2. **Create and activate a virtual environment (recommended):**
-   ```bash
-   python -m venv .venv
-
-   # On macOS/Linux:
-   source .venv/bin/activate
-
-   # On Windows (Command Prompt):
-   .venv\Scripts\activate.bat
-
-   # On Windows (PowerShell):
-   .venv\Scripts\Activate.ps1
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Install Playwright Chromium browser:**
-   ```bash
-   playwright install chromium
-   ```
-
----
+That's it — the server is ready. Point your MCP client at `python /path/to/server.py`.
 
 ## Client Configuration
 
 ### Claude Desktop
 
-To integrate this server with Claude Desktop, add it to your configuration file:
-
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
-
-Add the following inside the `mcpServers` block (make sure to use absolute paths):
+Add to `claude_desktop_config.json` (use absolute paths):
 
 ```json
 {
@@ -146,97 +131,89 @@ Add the following inside the `mcpServers` block (make sure to use absolute paths
 }
 ```
 
-*Note for Windows users:* Use double backslashes in your paths (e.g., `"C:\\path\\to\\python.exe"`).
+*Windows: use double backslashes in your paths.*
 
 ### Claude Code
-
-Install and register the server globally using Claude Code CLI:
 
 ```bash
 claude mcp add reddit-mcp -- python /path/to/reddit-mcp-server/server.py
 ```
 
----
-
-## Tool Usage & Examples
-
-### Global Search
-Ask your AI assistant: *"Search Reddit for 'best keyboard for typing 2025' from the last month."*
-Under the hood, the AI will invoke:
-```json
-{
-  "tool": "search_reddit_query",
-  "arguments": {
-    "query": "best keyboard for typing 2025",
-    "sort": "relevance",
-    "time_filter": "month"
-  }
-}
-```
-
-### Business Opportunity Analysis
-Ask your AI assistant: *"Analyze r/SaaS and r/Entrepreneur for startup pain points."*
-Under the hood, the AI will invoke:
-```json
-{
-  "tool": "analyze_opportunities",
-  "arguments": {
-    "subreddits": ["saas", "Entrepreneur"],
-    "min_score": 150,
-    "limit": 20
-  }
-}
-```
-
----
-
 ## Opportunity Scoring Algorithm
-
-The `analyze_opportunities` tool implements a proprietary scoring function to identify valid business ideas and high-impact problems:
 
 $$Score = (Upvotes \times 2) + (Comments \times 3)$$
 
-Additionally, the following multipliers and bonuses are applied:
-* **High Engagement Ratio:** If comments-to-upvotes ratio is $> 0.3$, the score is multiplied by **1.3** (or **1.15** if $> 0.15$).
-* **Monetization Keywords:** $+15$ points per match for words like `subscription`, `SaaS`, `buy`, `pricing`, `charge`, `dollar`.
-* **Impact & Pain Point Keywords:** $+20$ points per match for words like `problem`, `frustrated`, `annoying`, `broken`, `wish`, `need`, `hate`.
-* **Dual-Category Match Bonus:** If both monetization and pain point keywords are detected, the overall score is multiplied by **1.25**.
+With multipliers and bonuses:
 
----
+* **High engagement** — comments/upvotes ratio $> 0.3$ → **×1.3** (or **×1.15** if $> 0.15$)
+* **Monetization keywords** — $+15$ per match (`pay`, `subscription`, `SaaS`, `pricing`, …)
+* **Pain-point keywords** — $+20$ per match (`problem`, `frustrated`, `broken`, `wish`, `hate`, …)
+* **Dual-category bonus** — both categories detected → overall **×1.25**
 
-## Advanced Configuration
+Keyword matching respects **word boundaries** (`pay` matches `paying`, not `paywall`), and every idea includes its `matched_keywords` so the AI can explain its reasoning.
 
-### Customized Scraper Parameters
-The browser scraping parameters can be fine-tuned directly in `server.py`:
-- **Viewport Size:** Configured to `1280x900` to simulate a real desktop.
-- **User Agent:** Utilizes a modern, realistic user-agent string to prevent blockages.
-- **Media Blocklist:** All routes ending in visual assets (`.png`, `.jpg`, `.gif`, etc.) are aborted to optimize performance.
+## Configuration
 
----
+Every knob is an environment variable — no code changes needed:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `REDDIT_HEADLESS` | `true` | Run Chromium headless (`false` to watch the browser). |
+| `REDDIT_VIEWPORT_WIDTH` / `REDDIT_VIEWPORT_HEIGHT` | `1280` / `900` | Browser viewport. |
+| `REDDIT_USER_AGENT` | modern Chrome UA | User-agent sent to Reddit. |
+| `REDDIT_NAV_TIMEOUT_MS` | `45000` | Navigation timeout (ms). |
+| `REDDIT_WAIT_TIMEOUT_MS` | `15000` | Content wait timeout (ms). |
+| `REDDIT_REQUEST_DELAY` | `1.5` | Pause (s) between subreddit requests — be polite to Reddit. |
+| `REDDIT_MAX_SCROLLS` | `4` | Scroll iterations to trigger lazy-loaded content. |
+| `REDDIT_MAX_RETRIES` | `3` | Retry attempts per page load (exponential backoff). |
+| `REDDIT_RETRY_BACKOFF` | `2.0` | Base backoff (s) between retries. |
+| `REDDIT_CACHE_TTL` | `300` | TTL (s) of the in-memory cache for listings (`0` disables). |
+| `REDDIT_LOG_LEVEL` | `INFO` | Log level (`DEBUG`, `INFO`, `WARNING`, `ERROR`). |
+
+## Development
+
+```bash
+uv sync --extra dev      # reproducible env in .venv/ (uv is optional — pip works too)
+make lint                # ruff
+make typecheck           # mypy (server + tests)
+make test                # pytest — 133 offline unit tests
+make coverage            # pytest + coverage gate (100 %)
+make test-live           # live tests against real reddit.com (needs Chromium)
+make run                 # start the MCP server
+```
+
+**Tests are a first-class citizen here:**
+
+- `tests/test_server.py`, `tests/test_scraper.py`, `tests/test_browser.py` — 133 offline tests using fake Playwright objects: **100 % coverage**, no browser, no network.
+- `tests/test_integration.py` — live end-to-end tests against the real Reddit website (opt-in: `REDDIT_LIVE_TESTS=1 pytest -m integration`).
+
+CI (`.github/workflows/ci.yml`) runs ruff, mypy and the coverage gate on Python 3.10–3.12, plus an opt-in live job.
+
+## Docker
+
+```bash
+docker build -t reddit-mcp-server .
+docker run -i --rm reddit-mcp-server
+```
+
+Chromium is installed inside the image, and the server runs as an **unprivileged user**.
 
 ## Troubleshooting & Limitations
 
-- **Rate Limits & IP Blocks:** Heavy automated scraping may trigger Reddit's anti-bot system, leading to HTTP 429 errors or temporary blocks. Ensure you do not make rapid sequential calls.
-- **Dynamic CSS Selectors:** Since this server relies on web scraping instead of the official API, updates to Reddit's frontend architecture (e.g., changing `shreddit-post` tags) may break selectors. Please open an issue if this occurs.
-- **Speed Performance:** Rendering Chromium headlessly and scrolling to load content takes between 5 to 30 seconds per request depending on your connection speed and system performance.
-- **No Private Auth:** This tool operates on public-facing Reddit pages and does not support logging into accounts or viewing private communities.
-
----
+- **Rate limits & IP blocks** — heavy scraping can trigger Reddit's anti-bot (HTTP 429 / login redirects). The server retries with backoff and detects them; increase `REDDIT_REQUEST_DELAY` if you get blocked.
+- **Dynamic DOM** — this is a scraper, not an API: if Reddit changes its frontend, selectors may break. The live test suite exists to catch exactly that — run it before opening an issue.
+- **Member counts** — Reddit's anonymous UI no longer exposes a subreddit's total member count; `get_subreddit_info` returns `members: null` when unavailable (other stats come from the structured page header and are reliable).
+- **Speed** — first call of a session launches Chromium (5–30 s); subsequent calls reuse the shared browser and cache.
+- **No private auth** — public-facing pages only; no account login.
 
 ## Contributing
 
-Contributions are highly appreciated! Whether you want to improve the scraping selectors, add new analytical tools, or refine the documentation, we welcome your input.
-
-Please read our [**Contributing Guidelines**](CONTRIBUTING.md) to get started on setting up the local development environment and creating pull requests.
-
----
+Contributions are very welcome — improving selectors, adding tools, refining docs. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Security
 
-We take security seriously. If you discover any vulnerability in this server, please refer to our [**Security Policy**](SECURITY.md) for details on how to report it securely.
-
----
+Found a vulnerability? Report it privately — see [SECURITY.md](SECURITY.md).
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+[MIT](LICENSE) © 2026 Simon Chusseau

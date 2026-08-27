@@ -12,6 +12,16 @@ venv/
 .venv/
 env/
 
+# Test artifacts
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+
 # IDE
 .vscode/
 .idea/

@@ -1,2 +1,2 @@
-fastmcp
-playwright
+fastmcp>=2.2
+playwright>=1.44
