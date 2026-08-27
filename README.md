@@ -1,15 +1,5 @@
 # Reddit MCP Server
 
-**Your AI, plugged into Reddit. No API key. No login. Just the raw feed.**
-
-Give Claude — or any MCP client — real-time access to Reddit: browse subreddits, pull comment threads, mine startup ideas and pain points. Built on **FastMCP** and **Playwright**, it scrapes the public web interface with a fast, headless browser. The result: live Reddit data, straight from the source, with zero setup cost.
-
-```text
-You:  "What are people complaining about in r/SaaS this week?"
-AI:   ▸ 214 posts scanned · 37 pain points found · score 1260 "Paying for
-      overpriced subscriptions is ridiculous" · 8 ideas over 1000 points
-```
-
 <div align="center">
 
 [![Latest Version](https://img.shields.io/badge/version-v0.3.0-blue.svg)](#)
@@ -23,6 +13,16 @@ AI:   ▸ 214 posts scanned · 37 pain points found · score 1260 "Paying for
 
 </div>
 
+
+**Your AI, plugged into Reddit. No API key. No login. Just the raw feed.**
+
+Give Claude — or any MCP client — real-time access to Reddit: browse subreddits, pull comment threads, mine startup ideas and pain points. Built on **FastMCP** and **Playwright**, it scrapes the public web interface with a fast, headless browser. The result: live Reddit data, straight from the source, with zero setup cost.
+
+```text
+You:  "What are people complaining about in r/SaaS this week?"
+AI:   ▸ 214 posts scanned · 37 pain points found · score 1260 "Paying for
+      overpriced subscriptions is ridiculous" · 8 ideas over 1000 points
+```
 ---
 
 ## What's inside
